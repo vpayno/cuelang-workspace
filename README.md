@@ -2,6 +2,8 @@
 
 Personal workspace/scratch space for learning CUElang.
 
+`CUE` => Configure, Unify, Execute
+
 ## Tutorial Sources
 
 - [CUElang](https://cuelang.org/docs/)
