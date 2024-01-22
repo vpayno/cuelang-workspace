@@ -1,9 +1,9 @@
 package errors_with_defaults
 
-list: ['a', 'b', 'c']
+list: ["a", "b", "c"]
 
-first:  *list[0] | 'A' // returns 'a'
-fourth: *list[3] | 'D' // returns 'D'
+first:  *list[0] | "A" // returns "a"
+fourth: *list[3] | "D" // returns "D"
 
 struct: {
 	one: 1
