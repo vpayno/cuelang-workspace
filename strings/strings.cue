@@ -1,4 +1,6 @@
-package strings
+package strs
+
+import "strings"
 
 str: string
 str: "this is an utf-8 string"
@@ -71,3 +73,62 @@ str2: ##"""
 	"""##
 
 byte_sequence: '\x03abc\U0001F604' //  "b": "A2FiY/CfmIQ=" when exported (base64)
+
+convert_string_to_bytes: '\(str)'
+length_string:           len(strings.Runes(str)) // 23
+length_bytes:            len('\(str)')           // 23
+
+smily_face_str_len:  len(strings.Runes(smily_face)) // 1
+smily_face_byte_len: len(smily_face)                // 4
+
+#Short_str: string & strings.MinRunes(3) & strings.MaxRunes(80)
+#Long_str:  string & strings.MinRunes(81) & strings.MaxRunes(160)
+
+short_one: #Short_str & "one two three four five six seven eight nine ten eleven twelve thirteen fourteen"
+long_one:  #Long_str & "one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty"
+
+ascii_constrain_bytes: {
+	// set up an alias to allow the following CUE to refer to it
+	let content = "only ASCII characters" // 21 runes composed of 21 bytes
+
+	// this embedded scalar ultimately sets the value of the containing field,
+	// "ascii_constrain_bytes"
+	content
+
+	// enforce that "content" contains between 50 and 100 bytes
+	#bytes: len(content) & >=5 & <=100
+}
+
+// 2 examples that use multi-byte, South Korean Hangul characters
+multibyte_constrain_runes: "한글" // 2 runes composed of 6 bytes
+// enforce that the field contains 5 or fewer runes
+multibyte_constrain_runes: strings.MaxRunes(5)
+
+multibyte_constrain_bytes: {
+	// set up an alias to allow the following CUE to refer to it
+	let content = "한글" // 2 runes composed of 6 bytes
+
+	// this embedded scalar ultimately sets the value of the containing field,
+	// "multibyte_constrain_bytes"
+	content
+
+	// enforce that "content" contains 15 or fewer bytes
+	#bytes: len(content) & <=15
+}
+
+// 2 examples that use multi-byte, emoji characters
+emoji_constrain_runes: "😄🥵🙃🥶" // 4 runes composed of 16 bytes
+// enforce that the field contains 3 or more runes
+emoji_constrain_runes: strings.MinRunes(3)
+
+emoji_constrain_bytes: {
+	// set up an alias to allow the following CUE to refer to it
+	let content = "😄🥵🙃🥶" // 4 runes composed of 16 bytes
+
+	// this embedded scalar ultimately sets the value of the containing field,
+	// "emoji_constrain_bytes"
+	content
+
+	// enforce that "content" contains 10 or more bytes
+	#bytes: len(content) & >=10
+}
